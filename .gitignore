@@ -6,6 +6,9 @@ UnityOps/[Oo]bj/
 *.csproj
 *.unityproj
 *.sln
+*.pidb
+*.userprefs
 
+.DS_Store
 *~
 .*.swp
