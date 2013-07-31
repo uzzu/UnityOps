@@ -8,29 +8,36 @@ namespace UnityOps.UnityAsync
 	public class Executor : MonoBehaviour
 	{
 		#region properties
-		public bool IsOrderdExecute;
-
 		public Func<IEnumerator> ExecuteCoroutine;
-
-		public Action CheckForResult;
-
+		public Action SendResult;
 		public Action<Exception> ExceptionCallback;
-
 		public Action AbortCallback;
-		#endregion
-
+		protected bool isOrderdExecute = false;
+		protected bool isOrderdSendResult = true;
 		bool isProcessedWaitForExecuteOrder = false;
 		bool isProcessedExecuteCoroutine = false;
-		bool isProcessedCheckForResult = false;
+		bool isProcessedWaitForSendResultOrder = false;
+		bool isProcessedSendResult = false;
+		#endregion
 
 		#region public methods
 		public void Execute()
 		{
-			if (IsOrderdExecute)
+			if (isOrderdExecute)
 			{
 				throw new InvalidOperationException("already executed!");
 			}
-			IsOrderdExecute = true;
+			isOrderdExecute = true;
+		}
+
+		public void WaitForSendResult()
+		{
+			isOrderdSendResult = false;
+		}
+
+		public void CompleteWaitForResult()
+		{
+			isOrderdSendResult = true;
 		}
 
 		public void Cancel()
@@ -43,30 +50,36 @@ namespace UnityOps.UnityAsync
 		#region override unity methods
 		IEnumerator Start()
 		{
-			if (!IsOrderdExecute)
+			if (!isOrderdExecute)
 			{
 				yield return StartCoroutine(WaitForExecuteOrder());
 			}
 			isProcessedWaitForExecuteOrder = true;
+
 			if (ExecuteCoroutine != null)
 			{
 				yield return StartCoroutine(ExecuteCoroutine());
 			}
 			isProcessedExecuteCoroutine = true;
-			if (CheckForResult != null)
+
+			if (!isOrderdSendResult)
 			{
-				CheckForResult();
+				yield return StartCoroutine(WaitForSendResultOrder());
 			}
-			isProcessedCheckForResult = true;
+			isProcessedWaitForSendResultOrder = true;
+
+			if (SendResult != null)
+			{
+				SendResult();
+			}
+			isProcessedSendResult = true;
+
 			this.DestroyObject(gameObject);
 		}
 
 		void OnDestroy()
 		{
-			if (IsOrderdExecute
-				&& isProcessedWaitForExecuteOrder
-				&& isProcessedExecuteCoroutine
-				&& isProcessedCheckForResult)
+			if (IsCompleted())
 			{
 				return;
 			}
@@ -80,10 +93,27 @@ namespace UnityOps.UnityAsync
 		#region private methods
 		IEnumerator WaitForExecuteOrder()
 		{
-			while (!IsOrderdExecute)
+			while (!isOrderdExecute)
 			{
 				yield return null;
 			}
+		}
+
+		IEnumerator WaitForSendResultOrder()
+		{
+			while (!isOrderdSendResult)
+			{
+				Debug.Log("waiting");
+				yield return null;
+			}
+		}
+
+		bool IsCompleted()
+		{
+			return isProcessedWaitForExecuteOrder
+				&& isProcessedExecuteCoroutine
+				&& isProcessedWaitForSendResultOrder
+				&& isProcessedSendResult;
 		}
 
 		void DestroyObject(GameObject gameobject)

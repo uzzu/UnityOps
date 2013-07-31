@@ -32,7 +32,7 @@ namespace UnityOps.UnityAsync
 			GameObject gameObject = new GameObject(name);
 			executor = gameObject.AddComponent<Executor>();
 			executor.ExecuteCoroutine = callback;
-			executor.CheckForResult = CheckForResult;
+			executor.SendResult = SendResult;
 			executor.AbortCallback = HandleAbort;
 			executor.Execute();
 		}
@@ -57,7 +57,27 @@ namespace UnityOps.UnityAsync
 		/// </returns>
 		protected abstract IEnumerator ExecuteCore();
 
-		protected virtual void CheckForResult()
+		protected virtual void WaitForResult()
+		{
+			if (executor == null)
+			{
+				HandleAbort();
+				return;
+			}
+			executor.WaitForSendResult();
+		}
+
+		protected virtual void CompleteWaitForResult()
+		{
+			if (executor == null)
+			{
+				HandleAbort();
+				return;
+			}
+			executor.CompleteWaitForResult();
+		}
+
+		protected virtual void SendResult()
 		{
 			if (result == null)
 			{
@@ -90,6 +110,7 @@ namespace UnityOps.UnityAsync
 		protected virtual void HandleException(Exception e)
 		{
 			result = new TErrors() { ExceptionError = true, ExceptionCause = e };
+			CompleteWaitForResult();
 		}
 
 		protected virtual void HandleAbort()

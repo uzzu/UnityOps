@@ -17,14 +17,14 @@ namespace UnityOps.UnityAsync
 			asyncOps.Execute();
 			return asyncOps;
 		}
-		
+
 		public static AsyncOperationDelegate Call(string name, Func<IEnumerator> callback)
 		{
 			AsyncOperationDelegate asyncOps = new AsyncOperationDelegate(name, callback);
 			asyncOps.Execute();
 			return asyncOps;
 		}
-		
+
 		public AsyncOperationDelegate(Func<IEnumerator> callback) : this("AsyncOperationDelegate", callback)
 		{
 		}
