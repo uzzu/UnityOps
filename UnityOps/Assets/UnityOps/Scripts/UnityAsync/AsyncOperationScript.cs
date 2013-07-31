@@ -87,6 +87,11 @@ namespace UnityOps.UnityAsync
 			}
 		}
 
+		protected virtual void HandleException(Exception e)
+		{
+			result = new TErrors() { ExceptionError = true, ExceptionCause = e };
+		}
+
 		protected virtual void HandleAbort()
 		{
 			if (Error != null)

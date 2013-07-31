@@ -6,7 +6,7 @@ namespace UnityOps
 	[Serializable]
 	public abstract partial class OperationScript<TOutputs, TErrors> : IOperationScript<TOutputs, TErrors>
 		where TOutputs : OperationOutputs
-		where TErrors : OperationErrors
+		where TErrors : OperationErrors, new()
 	{
 		#region inner classes, enum, and structs
 		// protected sealed class Result in OperationScript.Result.cs
@@ -23,14 +23,24 @@ namespace UnityOps
 		#region public methods
 		public void Execute()
 		{
-			Result result = ExecuteCore();
-			if (result.IsSuccess() && (Success != null))
+			try
 			{
-				Success(this, new SuccessEventArgs<TOutputs>(result.Outputs));
+				Result result = ExecuteCore();
+				if (result.IsSuccess() && (Success != null))
+				{
+					Success(this, new SuccessEventArgs<TOutputs>(result.Outputs));
+				}
+				if (result.IsError() && (Error != null))
+				{
+					Error(this, new ErrorEventArgs<TErrors>(result.Errors));
+				}
 			}
-			if (result.IsError() && (Error != null))
+			catch (Exception e)
 			{
-				Error(this, new ErrorEventArgs<TErrors>(result.Errors));
+				if (Error != null)
+				{
+					Error(this, new ErrorEventArgs<TErrors>(new TErrors() { ExceptionError = true, ExceptionCause = e }));
+				}
 			}
 		}
 		#endregion

@@ -13,16 +13,16 @@ namespace UnityOps.UnityAsync
 		#endregion
 
 		#region public methods
-		public static IAsyncOperationScript<OperationOutputs, AsyncOperationErrors> Call(Action callback)
+		public static InvokeAfterFrame Call(Action callback)
 		{
-			IAsyncOperationScript<OperationOutputs, AsyncOperationErrors> asyncOps = new InvokeAfterFrame(callback);
+			InvokeAfterFrame asyncOps = new InvokeAfterFrame(callback);
 			asyncOps.Execute();
 			return asyncOps;
 		}
 
-		public static IAsyncOperationScript<OperationOutputs, AsyncOperationErrors> Call(Action callback, int delayFrame)
+		public static InvokeAfterFrame Call(Action callback, int delayFrame)
 		{
-			IAsyncOperationScript<OperationOutputs, AsyncOperationErrors> asyncOps = new InvokeAfterFrame(callback, delayFrame);
+			InvokeAfterFrame asyncOps = new InvokeAfterFrame(callback, delayFrame);
 			asyncOps.Execute();
 			return asyncOps;
 		}
@@ -36,6 +36,7 @@ namespace UnityOps.UnityAsync
 			delayInvokeCallback = callback;
 			this.delayFrame = delayFrame;
 			name = "InvokeAfterFrame";
+			nullResultIsSuccess = true;
 		}
 
 		public override void Execute()
@@ -57,7 +58,14 @@ namespace UnityOps.UnityAsync
 				}
 				yield return null;
 			}
-			delayInvokeCallback();
+			try
+			{
+				delayInvokeCallback();
+			}
+			catch (Exception e)
+			{
+				HandleException(e);
+			}
 		}
 		#endregion
 	}

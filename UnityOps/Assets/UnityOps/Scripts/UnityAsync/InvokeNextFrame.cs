@@ -12,9 +12,9 @@ namespace UnityOps.UnityAsync
 		#endregion
 
 		#region public methods
-		public static IAsyncOperationScript<OperationOutputs, AsyncOperationErrors> Call(Action callback)
+		public static InvokeNextFrame Call(Action callback)
 		{
-			IAsyncOperationScript<OperationOutputs, AsyncOperationErrors> asyncOps = new InvokeNextFrame(callback);
+			InvokeNextFrame asyncOps = new InvokeNextFrame(callback);
 			asyncOps.Execute();
 			return asyncOps;
 		}
@@ -44,7 +44,14 @@ namespace UnityOps.UnityAsync
 				}
 				yield return null;
 			}
-			delayInvokeCallback();
+			try
+			{
+				delayInvokeCallback();
+			}
+			catch (Exception e)
+			{
+				HandleException(e);
+			}
 		}
 		#endregion
 	}

@@ -4,6 +4,10 @@ using System.Collections;
 namespace UnityOps.UnityAsync
 {
 	[Serializable]
+	/// <summary>
+	/// Async operation delegate.
+	/// [Warning] An exception cannot be handled in this object.
+	/// </summary>
 	public class AsyncOperationDelegate : AsyncOperationScript<OperationOutputs, AsyncOperationErrors>
 	{
 		#region public methods
