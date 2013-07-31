@@ -4,6 +4,7 @@ using System.Collections;
 
 namespace UnityOps.UnityAsync
 {
+	[Serializable]
 	public class InvokeAfterFrame : AsyncOperationScript<OperationOutputs, AsyncOperationErrors>
 	{
 		#region properties
@@ -27,16 +28,27 @@ namespace UnityOps.UnityAsync
 			return asyncOps;
 		}
 
+		public static InvokeAfterFrame Call(string name, Action callback, int delayFrame)
+		{
+			InvokeAfterFrame asyncOps = new InvokeAfterFrame(name, callback, delayFrame);
+			asyncOps.Execute();
+			return asyncOps;
+		}
+
 		public InvokeAfterFrame(Action callback) : this(callback, 1)
 		{
 		}
 
-		public InvokeAfterFrame(Action callback, int delayFrame)
+		public InvokeAfterFrame(Action callback, int delayFrame) : this("InvokeAfterFrame", callback, delayFrame)
 		{
-			delayInvokeCallback = callback;
+		}
+
+		public InvokeAfterFrame(string name, Action callback, int delayFrame)
+		{
+			this.name = name;
+			this.delayInvokeCallback = callback;
 			this.delayFrame = delayFrame;
-			name = "InvokeAfterFrame";
-			nullResultIsSuccess = true;
+			this.nullResultIsSuccess = true;
 		}
 
 		public override void Execute()
