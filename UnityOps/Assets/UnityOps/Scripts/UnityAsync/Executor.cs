@@ -43,7 +43,10 @@ namespace UnityOps.UnityAsync
 		#region override unity methods
 		IEnumerator Start()
 		{
-			yield return StartCoroutine(WaitForExecuteOrder());
+			if (!IsOrderdExecute)
+			{
+				yield return StartCoroutine(WaitForExecuteOrder());
+			}
 			isProcessedWaitForExecuteOrder = true;
 			if (ExecuteCoroutine != null)
 			{

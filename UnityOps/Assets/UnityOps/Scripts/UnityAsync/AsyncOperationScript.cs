@@ -27,7 +27,7 @@ namespace UnityOps.UnityAsync
 			callback = ExecuteCore;
 		}
 
-		public void Execute()
+		public virtual void Execute()
 		{
 			GameObject gameObject = new GameObject(name);
 			executor = gameObject.AddComponent<Executor>();
