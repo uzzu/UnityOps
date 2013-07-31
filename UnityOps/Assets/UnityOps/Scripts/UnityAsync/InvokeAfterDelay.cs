@@ -39,7 +39,7 @@ namespace UnityOps.UnityAsync
 		{
 		}
 
-		public InvokeAfterDelay(Action callback, float delay) : this("InvokeAfterDelay", callback, 0.0f)
+		public InvokeAfterDelay(Action callback, float delay) : this("InvokeAfterDelay", callback, delay)
 		{
 		}
 
