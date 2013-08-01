@@ -48,6 +48,11 @@ namespace UnityOps.UnityAsync
 		#endregion
 
 		#region override unity methods
+		void Awake()
+		{
+			DontDestroyOnLoad(gameObject);
+		}
+
 		IEnumerator Start()
 		{
 			if (!isOrderdExecute)
