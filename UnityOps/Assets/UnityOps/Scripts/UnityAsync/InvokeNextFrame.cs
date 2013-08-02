@@ -5,7 +5,11 @@ using System.Collections;
 namespace UnityOps.UnityAsync
 {
 	[Serializable]
-	public class InvokeNextFrame : AsyncOperationScript<OperationOutputs, AsyncOperationErrors>
+	/// <summary>
+	/// Invoke next frame.
+	/// From this object, progress is unreceivable.
+	/// </summary>
+	public class InvokeNextFrame : AsyncOperationScript<OperationOutputs, AsyncOperationErrors, OperationProgress>
 	{
 		#region properties
 		protected Action delayInvokeCallback;

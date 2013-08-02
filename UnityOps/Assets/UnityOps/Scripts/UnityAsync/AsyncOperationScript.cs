@@ -5,13 +5,15 @@ using UnityEngine;
 namespace UnityOps.UnityAsync
 {
 	[Serializable]
-	public abstract partial class AsyncOperationScript<TOutputs, TErrors> : IAsyncOperationScript<TOutputs, TErrors>
+	public abstract partial class AsyncOperationScript<TOutputs, TErrors, TProgress> : IAsyncOperationScript<TOutputs, TErrors, TProgress>
 		where TOutputs : OperationOutputs, new()
 		where TErrors : AsyncOperationErrors, new()
+		where TProgress : OperationProgress, new()
 	{
 		#region properties
 		public event SuccessEventHandler<TOutputs> Success;
 		public event ErrorEventHandler<TErrors> Error;
+		public event ProgressEventHandler<TProgress> Progress;
 
 		protected string name;
 		protected Func<IEnumerator> callback;
@@ -56,6 +58,20 @@ namespace UnityOps.UnityAsync
 		/// Enumerator
 		/// </returns>
 		protected abstract IEnumerator ExecuteCore();
+
+		protected virtual void NotifyProgress(float value)
+		{
+			NotifyProgress(new TProgress() { Value = value });
+		}
+
+		protected virtual void NotifyProgress(TProgress progress)
+		{
+			if (Progress == null)
+			{
+				return;
+			}
+			Progress(this, new ProgressEventArgs<TProgress>(progress));
+		}
 
 		protected virtual void WaitForResult()
 		{

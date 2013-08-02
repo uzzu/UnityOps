@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace UnityOps.UnityAsync
 {
-	partial class AsyncOperationScript<TOutputs, TErrors>
+	partial class AsyncOperationScript<TOutputs, TErrors, TProgress>
 	{
 		protected sealed class Result
 		{

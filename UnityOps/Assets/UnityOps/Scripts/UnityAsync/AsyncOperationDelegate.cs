@@ -6,9 +6,10 @@ namespace UnityOps.UnityAsync
 	[Serializable]
 		/// <summary>
 		/// Async operation delegate.
+		/// From this object, progress is unreceivable.
 		/// [Warning] An exception cannot be handled in this object.
 		/// </summary>
-	public class AsyncOperationDelegate : AsyncOperationScript<OperationOutputs, AsyncOperationErrors>
+	public class AsyncOperationDelegate : AsyncOperationScript<OperationOutputs, AsyncOperationErrors, OperationProgress>
 	{
 		#region public methods
 		public static AsyncOperationDelegate Call(Func<IEnumerator> callback)
