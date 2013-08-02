@@ -108,7 +108,6 @@ namespace UnityOps.UnityAsync
 		{
 			while (!isOrderdSendResult)
 			{
-				Debug.Log("waiting");
 				yield return null;
 			}
 		}
