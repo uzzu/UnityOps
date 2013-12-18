@@ -3,57 +3,57 @@ using System.Collections;
 
 namespace UnityOps.UnityAsync
 {
-	partial class AsyncOperationScript<TOutputs, TErrors, TProgress>
-	{
-		protected sealed class Result
-		{
-			#region properties
-			public readonly TOutputs Outputs;
-			public readonly TErrors Errors;
-			#endregion
+    partial class AsyncOperationScript<TOutputs, TErrors, TProgress>
+    {
+        protected sealed class Result
+        {
+            #region properties
+            public readonly TOutputs Outputs;
+            public readonly TErrors Errors;
+            #endregion
 
-			#region public methods
-			public static implicit operator Result(TOutputs outputs)
-			{
-				return new Result(outputs);
-			}
+            #region public methods
+            public static implicit operator Result(TOutputs outputs)
+            {
+                return new Result(outputs);
+            }
 
-			public static implicit operator Result(TErrors errors)
-			{
-				return new Result(errors);
-			}
+            public static implicit operator Result(TErrors errors)
+            {
+                return new Result(errors);
+            }
 
-			public Result(TOutputs outputs)
-			{
-				if (outputs == null)
-				{
-					throw new ArgumentException("outputs was null");
-				}
-				Outputs = outputs;
-			}
+            public Result(TOutputs outputs)
+            {
+                if (outputs == null)
+                {
+                    throw new ArgumentException("outputs was null");
+                }
+                Outputs = outputs;
+            }
 
-			public Result(TErrors errors)
-			{
-				if (errors == null)
-				{
-					throw new ArgumentException("errors was null");
-				}
-				Errors = errors;
-			}
+            public Result(TErrors errors)
+            {
+                if (errors == null)
+                {
+                    throw new ArgumentException("errors was null");
+                }
+                Errors = errors;
+            }
 
-			public bool IsSuccess()
-			{
-				return (Outputs != null);
-			}
+            public bool IsSuccess()
+            {
+                return (Outputs != null);
+            }
 
-			public bool IsError()
-			{
-				return (Errors != null);
-			}
-			#endregion
+            public bool IsError()
+            {
+                return (Errors != null);
+            }
+            #endregion
 
-			#region private methods
-			#endregion
-		}
-	}
+            #region private methods
+            #endregion
+        }
+    }
 }

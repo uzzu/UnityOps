@@ -4,72 +4,72 @@ using System.Collections;
 
 namespace UnityOps.UnityAsync
 {
-	[Serializable]
-	/// <summary>
-	/// Invoke next frame.
-	/// From this object, progress is unreceivable.
-	/// </summary>
-	public class InvokeNextFrame : AsyncOperationScript<OperationOutputs, AsyncOperationErrors, OperationProgress>
-	{
-		#region properties
-		protected Action delayInvokeCallback;
-		int startFrame;
-		#endregion
+    [Serializable]
+    /// <summary>
+    /// Invoke next frame.
+    /// From this object, progress is unreceivable.
+    /// </summary>
+    public class InvokeNextFrame : AsyncOperationScript<OperationOutputs, AsyncOperationErrors, OperationProgress>
+    {
+        #region properties
+        protected Action delayInvokeCallback;
+        int startFrame;
+        #endregion
 
-		#region public methods
-		public static InvokeNextFrame Call(Action callback)
-		{
-			InvokeNextFrame asyncOps = new InvokeNextFrame(callback);
-			asyncOps.Execute();
-			return asyncOps;
-		}
+        #region public methods
+        public static InvokeNextFrame Call(Action callback)
+        {
+            InvokeNextFrame asyncOps = new InvokeNextFrame(callback);
+            asyncOps.Execute();
+            return asyncOps;
+        }
 
-		public static InvokeNextFrame Call(string name, Action callback)
-		{
-			InvokeNextFrame asyncOps = new InvokeNextFrame(name, callback);
-			asyncOps.Execute();
-			return asyncOps;
-		}
+        public static InvokeNextFrame Call(string name, Action callback)
+        {
+            InvokeNextFrame asyncOps = new InvokeNextFrame(name, callback);
+            asyncOps.Execute();
+            return asyncOps;
+        }
 
-		public InvokeNextFrame(Action callback) : this("InvokeNextFrame", callback)
-		{
-		}
+        public InvokeNextFrame(Action callback) : this("InvokeNextFrame", callback)
+        {
+        }
 
-		public InvokeNextFrame(string name, Action callback)
-		{
-			this.name = name;
-			this.delayInvokeCallback = callback;
-			this.nullResultIsSuccess = true;
-		}
+        public InvokeNextFrame(string name, Action callback)
+        {
+            this.name = name;
+            this.delayInvokeCallback = callback;
+            this.nullResultIsSuccess = true;
+        }
 
-		public override void Execute()
-		{
-			startFrame = Time.frameCount;
-			base.Execute();
-		}
-		#endregion
+        public override void Execute()
+        {
+            startFrame = Time.frameCount;
+            base.Execute();
+        }
+        #endregion
 
-		#region private methods
-		protected override IEnumerator ExecuteCore()
-		{
-			while (true)
-			{
-				int elapsed = Time.frameCount - startFrame;
-				if (elapsed > 0)
-				{
-					break;
-				}
-				yield return null;
-			}
-			try
-			{
-				delayInvokeCallback();
-			}
-			catch (Exception e)
-			{
-				HandleException(e);
-			}
-		}
-		#endregion
-	}
+        #region private methods
+        protected override IEnumerator ExecuteCore()
+        {
+            while (true)
+            {
+                int elapsed = Time.frameCount - startFrame;
+                if (elapsed > 0)
+                {
+                    break;
+                }
+                yield return null;
+            }
+            try
+            {
+                delayInvokeCallback();
+            }
+            catch (Exception e)
+            {
+                HandleException(e);
+            }
+        }
+        #endregion
+    }
 }

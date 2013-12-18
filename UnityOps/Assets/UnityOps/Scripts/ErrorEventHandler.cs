@@ -2,7 +2,7 @@
 
 namespace UnityOps
 {
-	public delegate void ErrorEventHandler<TErrors>(object sender, ErrorEventArgs<TErrors> e)
-		where TErrors : OperationErrors;
+    public delegate void ErrorEventHandler<TErrors>(object sender, ErrorEventArgs<TErrors> e)
+        where TErrors : OperationErrors;
 }
 

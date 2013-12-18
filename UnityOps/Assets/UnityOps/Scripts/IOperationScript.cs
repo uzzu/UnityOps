@@ -2,14 +2,13 @@
 
 namespace UnityOps
 {
-	public interface IOperationScript<TOutputs, TErrors>
-		where TOutputs : OperationOutputs
-		where TErrors : OperationErrors
-	{
-		event SuccessEventHandler<TOutputs> Success;
+    public interface IOperationScript<TOutputs, TErrors>
+        where TOutputs : OperationOutputs
+        where TErrors : OperationErrors
+    {
+        event SuccessEventHandler<TOutputs> Success;
+        event ErrorEventHandler<TErrors> Error;
 
-		event ErrorEventHandler<TErrors> Error;
-
-		void Execute();
-	}
+        void Execute();
+    }
 }

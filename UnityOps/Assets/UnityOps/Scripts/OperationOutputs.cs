@@ -2,8 +2,8 @@
 
 namespace UnityOps
 {
-	[Serializable]
-	public class OperationOutputs
-	{
-	}
+    [Serializable]
+    public class OperationOutputs
+    {
+    }
 }
