@@ -25,7 +25,7 @@ namespace UnityOps
 
 			public Result(TOutputs outputs)
 			{
-				if (outputs != null)
+				if (outputs == null)
 				{
 					throw new ArgumentException("outputs was null");
 				}
@@ -34,7 +34,7 @@ namespace UnityOps
 
 			public Result(TErrors errors)
 			{
-				if (errors != null)
+				if (errors == null)
 				{
 					throw new ArgumentException("errors was null");
 				}
