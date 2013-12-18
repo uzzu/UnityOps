@@ -32,9 +32,23 @@ namespace UnityOps.UnityAsync
             return asyncOps;
         }
 
+        public static InvokeAfterDelay Call(float delay, Action callback)
+        {
+            InvokeAfterDelay asyncOps = new InvokeAfterDelay(delay, callback);
+            asyncOps.Execute();
+            return asyncOps;
+        }
+
         public static InvokeAfterDelay Call(string name, Action callback, float delay)
         {
             InvokeAfterDelay asyncOps = new InvokeAfterDelay(name, callback, delay);
+            asyncOps.Execute();
+            return asyncOps;
+        }
+
+        public static InvokeAfterDelay Call(string name, float delay, Action callback)
+        {
+            InvokeAfterDelay asyncOps = new InvokeAfterDelay(name, delay, callback);
             asyncOps.Execute();
             return asyncOps;
         }
@@ -43,7 +57,15 @@ namespace UnityOps.UnityAsync
         {
         }
 
+        public InvokeAfterDelay(float delay, Action callback) : this(callback, delay)
+        {
+        }
+
         public InvokeAfterDelay(Action callback, float delay) : this("InvokeAfterDelay", callback, delay)
+        {
+        }
+
+        public InvokeAfterDelay(string name, float delay, Action callback) : this(name, callback, delay)
         {
         }
 

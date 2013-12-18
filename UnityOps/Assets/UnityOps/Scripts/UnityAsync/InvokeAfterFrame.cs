@@ -32,9 +32,23 @@ namespace UnityOps.UnityAsync
             return asyncOps;
         }
 
+        public static InvokeAfterFrame Call(int delayFrame, Action callback)
+        {
+            InvokeAfterFrame asyncOps = new InvokeAfterFrame(delayFrame, callback);
+            asyncOps.Execute();
+            return asyncOps;
+        }
+
         public static InvokeAfterFrame Call(string name, Action callback, int delayFrame)
         {
             InvokeAfterFrame asyncOps = new InvokeAfterFrame(name, callback, delayFrame);
+            asyncOps.Execute();
+            return asyncOps;
+        }
+
+        public static InvokeAfterFrame Call(string name, int delayFrame, Action callback)
+        {
+            InvokeAfterFrame asyncOps = new InvokeAfterFrame(name, delayFrame, callback);
             asyncOps.Execute();
             return asyncOps;
         }
@@ -43,7 +57,15 @@ namespace UnityOps.UnityAsync
         {
         }
 
+        public InvokeAfterFrame(int delayFrame, Action callback) : this(callback, delayFrame)
+        {
+        }
+
         public InvokeAfterFrame(Action callback, int delayFrame) : this("InvokeAfterFrame", callback, delayFrame)
+        {
+        }
+
+        public InvokeAfterFrame(string name, int delayFrame, Action callback) : this(name, callback, delayFrame)
         {
         }
 
