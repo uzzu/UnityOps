@@ -31,6 +31,7 @@ namespace UnityOps.UnityAsync
 
         public virtual void Execute()
         {
+            result = null;
             GameObject gameObject = new GameObject(name);
             executor = gameObject.AddComponent<Executor>();
             executor.ExecuteCoroutine = callback;
@@ -139,3 +140,4 @@ namespace UnityOps.UnityAsync
         #endregion
     }
 }
+
