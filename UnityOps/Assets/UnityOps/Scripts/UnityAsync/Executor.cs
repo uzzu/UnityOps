@@ -93,6 +93,15 @@ namespace UnityOps.UnityAsync
                 AbortCallback();
             }
         }
+
+        void OnApplicationQuit()
+        {
+            if (IsCompleted())
+            {
+                return;
+            }
+            AbortCallback = null;
+        }
         #endregion
 
         #region private methods
